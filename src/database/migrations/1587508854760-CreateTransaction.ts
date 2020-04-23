@@ -10,7 +10,7 @@ export default class CreateTransaction1587508854760 implements MigrationInterfac
                 columns: [
                     {
                         name: 'id',
-                        type: 'varchar',
+                        type: 'uuid',
                         isPrimary: true,
                         generationStrategy: 'uuid',
                         default: 'uuid_generate_v4()'
@@ -27,10 +27,6 @@ export default class CreateTransaction1587508854760 implements MigrationInterfac
                     },
                     {
                         name: 'type',
-                        type: 'varchar',
-                    },
-                    {
-                        name: 'category_id',
                         type: 'varchar',
                     },
                     {
