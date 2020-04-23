@@ -2,22 +2,25 @@
 import { getRepository } from 'typeorm';
 import Transaction from '../models/Transaction';
 
+import TransactionsRepository from "../repositories/TransactionsRepository";
+import { getCustomRepository } from 'typeorm';
+
+
 interface Request {
-  name: string,
+  title: string,
+  type: 'income' | 'outcome',
   value: number,
-  type: string,
-  category_id: string,
+  category: string,
 }
 
 class CreateTransactionService {
-  public async execute({name, value, type, category_id} : Request): Promise<Transaction> {
-    const transactionRepository = getRepository(Transaction);
+  public async execute({title, value, type, category} : Request): Promise<Transaction> {
+    const transactionRepository = getCustomRepository(TransactionsRepository);
 
     const transaction = transactionRepository.create({
-      name,
+      title,
       value,
       type,
-      category_id
     });
 
     await transactionRepository.save(transaction);
