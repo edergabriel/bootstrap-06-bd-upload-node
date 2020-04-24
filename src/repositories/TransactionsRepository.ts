@@ -12,21 +12,32 @@ interface Balance {
 class TransactionsRepository extends Repository<Transaction> {
   public async getBalance(): Promise<Balance> {
 
-    let income = 0;
-    let outcome = 0;
-    let total = 0;
-    /*for (let i=0; i<this.transactions.length; i++) {
-      if(this.transactions[i].type == "income") {
+    const transactions = await this.find();
 
-        income += this.transactions[i].value;
-      } else {
-        outcome += this.transactions[i].value;
+    const { income, outcome } = transactions.reduce((accumulator, transaction) => {
+      switch(transaction.type) {
+        case "income":
+          accumulator.income += Number(transaction.value);
+          break;
+        case "outcome":
+          accumulator.outcome += Number(transaction.value);
+          break;
+        default:
+          break;        
       }
-    }*/
 
-    total = income - outcome;
-    return {income: income, outcome: outcome, total: total};
+      return accumulator
+    }, {
+      income: 0,
+      outcome: 0,
+      total: 0,
+    })
+
+    const total = income - outcome;
+    return { income, outcome, total }
   }
+
+
 }
 
 export default TransactionsRepository;
